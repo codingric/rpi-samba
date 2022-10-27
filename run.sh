@@ -84,11 +84,15 @@ EOH
           echo -n "-only "
           echo "read only = yes" >>"$CONFIG_FILE"
         fi
-        echo -n "for users: "
-        users=$(echo "$users" |tr "," " ")
-        echo -n "$users "
-        echo "valid users = $users" >>"$CONFIG_FILE"
-        echo "DONE"
+
+        if [[ "$users" == *"guest"* ]]; then
+          echo "browsable = yes
+  guest ok = yes" >>"$CONFIG_FILE"
+        else
+          echo  "$users "
+          echo "valid users = $users" >>"$CONFIG_FILE"
+          echo "DONE"
+        fi
         ;;
       \?)
         echo "Invalid option: -$OPTARG"
